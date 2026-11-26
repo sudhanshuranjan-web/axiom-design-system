@@ -1,0 +1,317 @@
+/* ==========================================================================
+   AXIOM — mobile components v1.1
+   Load after axiom.css. Every mobile pattern lives inside an .ax-screen, so
+   sheets, menus and keyboards are positioned against the app, not the page.
+   Sizes follow platform guidance: 44pt minimum touch targets (Apple HIG),
+   detents at about half and full height, a drag handle on every sheet,
+   snackbars above bottom bars, large titles that collapse on scroll.
+   ========================================================================== */
+:root {
+  --ax-touch: 44px;                 /* minimum target */
+  --ax-safe-top: 54px;              /* status bar + island */
+  --ax-safe-bottom: 34px;           /* home indicator */
+  --ax-tabbar-h: 56px;              /* + safe bottom */
+  --ax-topbar-h: 44px;
+  --ax-radius-fab: 16px;
+  --ax-radius-msheet: 20px;
+  --ax-radius-group: 14px;
+  --ax-m-title: 30px/36px;
+  --ax-m-body: 16px/22px;
+  --ax-m-label: 14px/18px;
+  --d-sheet: calc(440ms * var(--axiom-motion-scale));
+  --d-push: calc(420ms * var(--axiom-motion-scale));
+}
+html[data-brand="axiom"] { --ax-radius-fab: 8px; --ax-radius-msheet: 12px; --ax-radius-group: 8px; --ax-m-title: 28px/34px; }
+
+/* ---------- Screen, pages, scroll ---------- */
+.ax-screen { position: relative; height: 100%; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; background: var(--axiom-surface-canvas); color: var(--axiom-text-primary); font: 400 var(--ax-m-body) var(--ax-sans); -webkit-tap-highlight-color: transparent; }
+.ax-screen__content { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--axiom-surface-canvas); transform-origin: 50% 0; transition: transform var(--d-sheet) var(--axiom-ease-drawer), border-radius var(--d-sheet) var(--axiom-ease-drawer), filter var(--d-sheet) ease; }
+.ax-screen[data-sheet="large"] .ax-screen__content { transform: scale(0.93) translateY(calc(var(--ax-safe-top) * 0.2)); border-radius: 12px; overflow: hidden; filter: brightness(0.92); }
+.ax-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.ax-scroll::-webkit-scrollbar { display: none; }
+.ax-safe-top { height: var(--ax-safe-top); flex: none; }
+.ax-pad { padding: 0 16px; }
+
+/* ---------- Top app bar with collapsing large title ---------- */
+.ax-mtopbar { position: relative; z-index: 4; flex: none; display: flex; align-items: center; gap: 4px; height: calc(var(--ax-topbar-h) + var(--ax-safe-top)); padding: var(--ax-safe-top) 8px 0; background: color-mix(in srgb, var(--axiom-surface-canvas) 86%, transparent); -webkit-backdrop-filter: saturate(1.6) blur(18px); backdrop-filter: saturate(1.6) blur(18px); box-shadow: 0 1px 0 transparent; transition: box-shadow var(--d-feedback) ease; }
+.ax-mtopbar.is-collapsed { box-shadow: 0 1px 0 var(--axiom-line-subtle); }
+.ax-mtopbar__title { position: absolute; left: 50%; bottom: 0; height: var(--ax-topbar-h); display: flex; align-items: center; font: var(--ax-w-strong) 16px/20px var(--ax-sans); white-space: nowrap; opacity: 0; transform: translate(-50%, 6px); transition: opacity var(--d-feedback) ease, transform var(--d-transition) var(--axiom-ease-out); pointer-events: none; }
+.ax-mtopbar.is-collapsed .ax-mtopbar__title, .ax-mtopbar--inline .ax-mtopbar__title { opacity: 1; transform: translate(-50%, 0); }
+.ax-mtopbar__spacer { flex: 1; }
+.ax-icon-btn { display: grid; place-items: center; width: var(--ax-touch); height: var(--ax-touch); border: 0; border-radius: var(--ax-radius-icon); background: transparent; color: var(--axiom-text-link); cursor: pointer; transition: background-color var(--d-feedback) ease, transform var(--d-press) var(--axiom-ease-out); }
+.ax-icon-btn svg { width: 22px; height: 22px; }
+.ax-icon-btn:active { transform: scale(0.92); background: var(--axiom-surface-hover); }
+.ax-back { display: inline-flex; align-items: center; gap: 2px; height: var(--ax-touch); padding: 0 8px 0 2px; border: 0; background: none; color: var(--axiom-text-link); font: 400 16px/20px var(--ax-sans); cursor: pointer; }
+.ax-back svg { width: 26px; height: 26px; }
+.ax-back:active { opacity: 0.5; }
+.ax-largetitle { padding: 2px 16px 10px; font: var(--ax-w-strong) var(--ax-m-title) var(--ax-sans); letter-spacing: -0.02em; transform-origin: 0 50%; }
+
+/* ---------- Tab bar (bottom navigation) ---------- */
+.ax-tabbar { position: relative; z-index: 5; flex: none; display: flex; height: calc(var(--ax-tabbar-h) + var(--ax-safe-bottom)); padding-bottom: var(--ax-safe-bottom); background: color-mix(in srgb, var(--axiom-surface-raised) 88%, transparent); -webkit-backdrop-filter: saturate(1.6) blur(18px); backdrop-filter: saturate(1.6) blur(18px); box-shadow: 0 -1px 0 var(--axiom-line-subtle); }
+.ax-tabbar__item { flex: 1; min-width: var(--ax-touch); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: 0; background: none; color: var(--axiom-text-tertiary); font: var(--ax-w-medium) 12px/14px var(--ax-sans); cursor: pointer; transition: color var(--d-feedback) ease; }
+.ax-tabbar__icon { position: relative; display: grid; place-items: center; width: 56px; height: 28px; border-radius: 1000px; }
+html[data-brand="axiom"] .ax-tabbar__icon { border-radius: 6px; }
+.ax-tabbar__icon::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--axiom-surface-selected); opacity: 0; transform: scaleX(0.5); transition: transform calc(260ms * var(--axiom-motion-scale)) var(--axiom-ease-out), opacity var(--d-feedback) ease; }
+.ax-tabbar__icon svg { position: relative; width: 22px; height: 22px; transition: transform var(--d-press) var(--axiom-ease-out); }
+.ax-tabbar__item:active .ax-tabbar__icon svg { transform: scale(0.88); }
+.ax-tabbar__item[aria-selected="true"] { color: var(--axiom-text-primary); }
+.ax-tabbar__item[aria-selected="true"] .ax-tabbar__icon { color: var(--axiom-text-link); }
+.ax-tabbar__item[aria-selected="true"] .ax-tabbar__icon::before { opacity: 1; transform: none; }
+.ax-tabbar__item .ax-badge { position: absolute; top: -4px; left: 34px; min-width: 18px; height: 18px; font-size: 12px; padding: 0 6px; box-shadow: 0 0 0 2px var(--axiom-surface-raised); }
+.ax-tabpanel-m { display: flex; flex-direction: column; flex: 1; min-height: 0; animation: ax-fade var(--d-transition) ease; }
+@keyframes ax-fade { from { opacity: 0; } }
+
+/* ---------- FAB (extended FAB shrinks while scrolling down) ---------- */
+.ax-fab { position: absolute; z-index: 6; right: 16px; bottom: calc(var(--ax-tabbar-h) + var(--ax-safe-bottom) + 16px); display: inline-flex; align-items: center; gap: 0; height: 56px; min-width: 56px; padding: 0 16px; border: 0; border-radius: var(--ax-radius-fab); background: var(--axiom-action-primary); color: var(--axiom-text-on-action); font: var(--ax-w-strong) 16px/20px var(--ax-sans); box-shadow: var(--axiom-elevation-floating); cursor: pointer; transition: transform var(--d-press) var(--axiom-ease-out), padding var(--d-transition) var(--axiom-motion-easing-standard), background-color var(--d-feedback) ease; }
+.ax-fab svg { width: 24px; height: 24px; flex: none; }
+.ax-fab__label { display: inline-block; max-width: 140px; margin-left: 8px; overflow: hidden; white-space: nowrap; transition: max-width var(--d-transition) var(--axiom-motion-easing-standard), opacity var(--d-feedback) ease, margin var(--d-transition) var(--axiom-motion-easing-standard); }
+.ax-fab.is-compact { padding: 0 16px; }
+.ax-fab.is-compact .ax-fab__label { max-width: 0; margin-left: 0; opacity: 0; }
+.ax-fab:active { transform: scale(0.95); }
+
+/* ---------- Grouped lists (settings, results) ---------- */
+.ax-group-label { padding: 18px 32px 6px; font: var(--ax-w-medium) 14px/18px var(--ax-sans); color: var(--axiom-text-tertiary); }
+.ax-mlist { margin: 0 16px; background: var(--axiom-surface-raised); border-radius: var(--ax-radius-group); overflow: hidden; box-shadow: var(--ax-card-ring, none); }
+.ax-mlist--flush { margin: 0; border-radius: 0; box-shadow: none; }
+.ax-mrow { position: relative; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 16px; width: 100%; border: 0; background: var(--axiom-surface-raised); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: background-color var(--d-feedback) ease; }
+.ax-mrow + .ax-mrow::before, .ax-swipe + .ax-swipe::before { content: ""; position: absolute; top: 0; left: var(--sep, 16px); right: 0; height: 1px; background: var(--axiom-line-subtle); z-index: 2; }
+.ax-mrow:active { background: var(--axiom-surface-hover); }
+.ax-mrow__icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--soft, var(--axiom-surface-sunken)); color: var(--on, var(--axiom-text-secondary)); flex: none; }
+.ax-mrow__icon svg { width: 18px; height: 18px; }
+.ax-mrow__text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ax-mrow__title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax-mrow__sub { font: 400 14px/18px var(--ax-sans); color: var(--axiom-text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax-mrow__meta { font: 400 14px/18px var(--ax-sans); color: var(--axiom-text-tertiary); white-space: nowrap; }
+.ax-mrow > svg:last-child { width: 18px; height: 18px; color: var(--axiom-text-tertiary); flex: none; }
+.ax-mrow.is-new { animation: ax-row-in calc(420ms * var(--axiom-motion-scale)) var(--axiom-ease-out); }
+@keyframes ax-row-in { from { opacity: 0; transform: translateY(-12px); } }
+.ax-unread { width: 10px; height: 10px; border-radius: 50%; background: var(--axiom-action-primary); flex: none; }
+
+/* ---------- Swipe actions ---------- */
+.ax-swipe { position: relative; overflow: hidden; background: var(--axiom-surface-raised); }
+.ax-swipe__actions { position: absolute; top: 0; right: 0; bottom: 0; display: flex; }
+.ax-swipe__actions--start { left: 0; right: auto; }
+.ax-swipe__action { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 76px; border: 0; color: #fff; font: var(--ax-w-medium) 12px/16px var(--ax-sans); cursor: pointer; }
+.ax-swipe__action svg { width: 20px; height: 20px; }
+.ax-swipe__action--archive { background: var(--axiom-tone-blue-solid); }
+.ax-swipe__action--flag { background: var(--axiom-tone-yellow-solid); color: #1e1e1e; }
+.ax-swipe__action--delete { background: var(--axiom-action-danger); }
+.ax-swipe__content { position: relative; z-index: 1; transform: translateX(var(--x, 0px)); touch-action: pan-y; background: var(--axiom-surface-raised); }
+.ax-swipe:not(.is-dragging) .ax-swipe__content { transition: transform calc(320ms * var(--axiom-motion-scale)) var(--axiom-ease-out); }
+.ax-swipe.is-full .ax-swipe__action:first-child { flex: 1; }
+.ax-swipe.is-removing { transition: height calc(260ms * var(--axiom-motion-scale)) var(--axiom-motion-easing-standard), opacity calc(200ms * var(--axiom-motion-scale)) ease; }
+
+/* ---------- Pull to refresh ---------- */
+.ax-ptr { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.ax-ptr__indicator { position: absolute; z-index: 3; top: 8px; left: 50%; width: 36px; height: 36px; margin-left: -18px; border-radius: 50%; background: var(--axiom-surface-raised); box-shadow: var(--axiom-elevation-floating); display: grid; place-items: center; transform: translateY(calc(var(--pull, 0px) - 52px)) rotate(calc(var(--pull, 0) * 3deg)); opacity: var(--pull-o, 0); }
+.ax-ptr__indicator svg { width: 20px; height: 20px; color: var(--axiom-action-primary); }
+.ax-ptr__indicator circle { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: var(--arc, 1); }
+.ax-ptr.is-refreshing .ax-ptr__indicator svg { animation: ax-spin-m calc(700ms * var(--axiom-motion-scale)) linear infinite; }
+.ax-ptr.is-refreshing .ax-ptr__indicator circle { stroke-dashoffset: 0.25; }
+@keyframes ax-spin-m { to { transform: rotate(360deg); } }
+.ax-ptr__body { transform: translateY(var(--pull, 0px)); }
+.ax-ptr:not(.is-pulling) .ax-ptr__body, .ax-ptr:not(.is-pulling) .ax-ptr__indicator { transition: transform calc(380ms * var(--axiom-motion-scale)) var(--axiom-ease-out), opacity var(--d-feedback) ease; }
+
+/* ---------- Long-press context menu ---------- */
+.ax-ctx { position: absolute; inset: 0; z-index: 40; opacity: 0; transition: opacity calc(200ms * var(--axiom-motion-scale)) ease; }
+.ax-ctx.is-open { opacity: 1; }
+.ax-ctx__scrim { position: absolute; inset: 0; background: rgb(0 0 0 / 0.18); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.ax-ctx__lift { position: absolute; border-radius: 12px; overflow: hidden; box-shadow: var(--axiom-elevation-modal); transition: transform calc(320ms * var(--axiom-motion-scale)) var(--axiom-ease-out); pointer-events: none; }
+.ax-ctx__menu { position: absolute; width: 230px; padding: 6px; border-radius: var(--ax-radius-group); background: var(--axiom-surface-floating); box-shadow: var(--axiom-elevation-modal); transform-origin: var(--origin, top left); transform: scale(0.9); opacity: 0; transition: transform calc(320ms * var(--axiom-motion-scale)) var(--axiom-ease-out), opacity calc(160ms * var(--axiom-motion-scale)) ease; }
+.ax-ctx.is-open .ax-ctx__menu { transform: none; opacity: 1; }
+.ax-ctx__menu .ax-item { min-height: 44px; }
+
+/* ---------- Bottom sheet with detents ---------- */
+.ax-msheet-layer { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
+.ax-msheet-layer.is-open { pointer-events: auto; }
+.ax-msheet-scrim { position: absolute; inset: 0; background: var(--axiom-surface-scrim); opacity: var(--scrim, 0); transition: opacity var(--d-sheet) ease; }
+.ax-msheet-layer.is-dragging .ax-msheet-scrim { transition: none; }
+.ax-msheet { position: absolute; left: 0; right: 0; bottom: 0; height: calc(100% - var(--ax-safe-top) - 10px); display: flex; flex-direction: column; background: var(--axiom-surface-raised); border-radius: var(--ax-radius-msheet) var(--ax-radius-msheet) 0 0; box-shadow: var(--axiom-elevation-modal); transform: translateY(var(--y, 100%)); transition: transform var(--d-sheet) var(--axiom-ease-drawer); will-change: transform; }
+.ax-msheet-layer.is-dragging .ax-msheet { transition: none; }
+.ax-msheet__grab { flex: none; padding: 8px 0 6px; touch-action: none; cursor: grab; }
+.ax-msheet__handle { width: 36px; height: 6px; margin: 0 auto; border-radius: 1000px; background: var(--axiom-surface-track); }
+.ax-msheet__head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 16px 12px; touch-action: none; }
+.ax-msheet__title { font: var(--ax-w-strong) 18px/24px var(--ax-sans); }
+.ax-msheet__body { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px calc(16px + var(--ax-safe-bottom)); overscroll-behavior: contain; }
+html[data-motion="reduced"] .ax-msheet { transition: transform 0s, opacity var(--d-transition) ease; }
+
+/* ---------- Action sheet & alert ---------- */
+.ax-overlay-m { position: absolute; inset: 0; z-index: 35; visibility: hidden; pointer-events: none; transition: visibility 0s linear var(--d-exit); }
+.ax-overlay-m.is-open { visibility: visible; pointer-events: auto; transition: none; }
+.ax-overlay-m > .ax-scrim-m { position: absolute; inset: 0; background: var(--axiom-surface-scrim); opacity: 0; transition: opacity var(--d-exit) ease; }
+.ax-overlay-m.is-open > .ax-scrim-m { opacity: 1; transition: opacity var(--d-overlay) ease; }
+.ax-asheet { position: absolute; left: 8px; right: 8px; bottom: calc(8px + var(--ax-safe-bottom) * 0.5); display: flex; flex-direction: column; gap: 8px; transform: translateY(calc(100% + 40px)); transition: transform calc(240ms * var(--axiom-motion-scale)) var(--axiom-motion-easing-exit); }
+.ax-overlay-m.is-open .ax-asheet { transform: none; transition: transform var(--d-sheet) var(--axiom-ease-drawer); }
+.ax-asheet__group { background: var(--axiom-surface-floating); border-radius: var(--ax-radius-group); overflow: hidden; }
+.ax-asheet__caption { padding: 14px 16px; text-align: center; font: 400 14px/18px var(--ax-sans); color: var(--axiom-text-tertiary); }
+.ax-asheet__item { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 56px; border: 0; background: transparent; color: var(--axiom-text-link); font: 400 18px/22px var(--ax-sans); cursor: pointer; }
+.ax-asheet__item + .ax-asheet__item, .ax-asheet__caption + .ax-asheet__item { box-shadow: inset 0 1px 0 var(--axiom-line-subtle); }
+.ax-asheet__item:active { background: var(--axiom-surface-hover); }
+.ax-asheet__item--danger { color: var(--axiom-action-danger); }
+.ax-asheet__item--cancel { font-weight: var(--ax-w-strong); }
+.ax-malert { position: absolute; top: 50%; left: 50%; width: 280px; margin: -90px 0 0 -140px; background: var(--axiom-surface-floating); border-radius: var(--ax-radius-group); text-align: center; overflow: hidden; opacity: 0; transform: scale(1.08); transition: opacity calc(150ms * var(--axiom-motion-scale)) ease, transform calc(150ms * var(--axiom-motion-scale)) var(--axiom-motion-easing-exit); }
+.ax-overlay-m.is-open .ax-malert { opacity: 1; transform: none; transition: opacity calc(200ms * var(--axiom-motion-scale)) ease, transform calc(320ms * var(--axiom-motion-scale)) var(--axiom-ease-out); }
+.ax-malert__body { padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+.ax-malert__title { font: var(--ax-w-strong) 18px/22px var(--ax-sans); }
+.ax-malert__text { font: 400 14px/18px var(--ax-sans); color: var(--axiom-text-secondary); }
+.ax-malert__actions { display: grid; grid-template-columns: 1fr 1fr; box-shadow: inset 0 1px 0 var(--axiom-line-subtle); }
+.ax-malert__actions .ax-asheet__item { min-height: 46px; font-size: 16px; }
+.ax-malert__actions .ax-asheet__item + .ax-asheet__item { box-shadow: inset 1px 0 0 var(--axiom-line-subtle); }
+
+/* ---------- Snackbar inside the screen: above the tab bar ---------- */
+.ax-msnack { position: absolute; z-index: 25; left: 12px; right: 12px; bottom: calc(var(--snack-offset, var(--ax-tabbar-h)) + var(--ax-safe-bottom) + 12px); opacity: 0; transform: translateY(16px) scale(0.98); pointer-events: none; transition: opacity calc(250ms * var(--axiom-motion-scale)) ease, transform calc(250ms * var(--axiom-motion-scale)) var(--axiom-motion-easing-exit); }
+.ax-msnack.is-on { opacity: 1; transform: none; pointer-events: auto; transition: opacity calc(300ms * var(--axiom-motion-scale)) ease, transform calc(400ms * var(--axiom-motion-scale)) var(--axiom-ease-out); }
+
+/* ---------- Search ---------- */
+.ax-msearch { display: flex; align-items: center; gap: 0; padding: 4px 16px 10px; }
+.ax-msearch__field { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; height: 38px; padding: 0 10px; border-radius: 10px; background: var(--axiom-surface-sunken); color: var(--axiom-text-tertiary); transition: box-shadow var(--d-feedback) ease; }
+html[data-brand="axiom"] .ax-msearch__field { border-radius: 4px; box-shadow: inset 0 0 0 1px var(--axiom-line-subtle); }
+.ax-msearch__field:focus-within { box-shadow: inset 0 0 0 1.5px var(--axiom-line-focus); }
+.ax-msearch__field svg { width: 18px; height: 18px; flex: none; }
+.ax-msearch__field input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: none; color: var(--axiom-text-primary); font: 400 16px/20px var(--ax-sans); }
+.ax-msearch__field input::placeholder { color: var(--axiom-text-tertiary); }
+.ax-msearch__cancel { max-width: 0; margin-left: 0; padding: 0; overflow: hidden; opacity: 0; border: 0; background: none; color: var(--axiom-text-link); font: 400 16px/20px var(--ax-sans); white-space: nowrap; cursor: pointer; transition: max-width var(--d-transition) var(--axiom-motion-easing-standard), opacity var(--d-feedback) ease, margin var(--d-transition) var(--axiom-motion-easing-standard); }
+.is-searching .ax-msearch__cancel { max-width: 80px; margin-left: 12px; opacity: 1; }
+.ax-collapse-y { display: grid; grid-template-rows: 1fr; transition: grid-template-rows var(--d-transition) var(--axiom-motion-easing-standard), opacity var(--d-feedback) ease; }
+.ax-collapse-y > * { min-height: 0; overflow: hidden; }
+.is-searching .ax-hide-when-searching { grid-template-rows: 0fr; opacity: 0; }
+.ax-search-results [hidden] { display: none; }
+mark.ax-hl { background: none; color: var(--axiom-text-primary); font-weight: var(--ax-w-strong); }
+
+/* ---------- Horizontal scrollers, carousel, dots ---------- */
+.ax-hscroll { display: flex; gap: 8px; overflow-x: auto; padding: 2px 16px 10px; scroll-snap-type: x proximity; scroll-padding: 16px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 28px), transparent); }
+.ax-hscroll::-webkit-scrollbar, .ax-carousel::-webkit-scrollbar, .ax-wheel__col::-webkit-scrollbar { display: none; }
+.ax-hscroll > * { scroll-snap-align: start; flex: none; }
+.ax-carousel { display: grid; grid-auto-flow: column; grid-auto-columns: 84%; gap: 12px; overflow-x: auto; padding: 0 16px; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.ax-carousel > * { scroll-snap-align: start; }
+.ax-dots { display: flex; justify-content: center; gap: 6px; padding: 12px 0 4px; }
+.ax-dot { width: 6px; height: 6px; padding: 0; border: 0; border-radius: 4px; background: var(--axiom-surface-track); cursor: pointer; transition: width var(--d-transition) var(--axiom-motion-easing-standard), background-color var(--d-feedback) ease; }
+.ax-dot[aria-current="true"] { width: 18px; background: var(--axiom-text-primary); }
+
+/* ---------- Wheel picker ---------- */
+.ax-wheel { position: relative; display: flex; justify-content: center; height: 220px; -webkit-mask-image: linear-gradient(transparent, #000 32%, #000 68%, transparent); mask-image: linear-gradient(transparent, #000 32%, #000 68%, transparent); user-select: none; }
+.ax-wheel::before { content: ""; position: absolute; left: 12px; right: 12px; top: 88px; height: 44px; border-radius: 10px; background: var(--axiom-surface-sunken); z-index: -1; }
+html[data-brand="axiom"] .ax-wheel::before { border-radius: 4px; }
+.ax-wheel__col { width: 76px; height: 220px; overflow-y: auto; padding: 88px 0; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; outline: none; }
+.ax-wheel__col:focus-visible { box-shadow: inset 0 0 0 1.5px var(--axiom-line-focus); border-radius: 8px; }
+.ax-wheel__item { height: 44px; display: grid; place-items: center; scroll-snap-align: center; font: 400 22px/1 var(--ax-sans); font-variant-numeric: tabular-nums; color: var(--axiom-text-primary); opacity: var(--o, 0.35); transform: scale(var(--s, 0.9)); }
+
+/* ---------- Keyboard avoidance with a sticky bottom action ---------- */
+.ax-mcta { position: absolute; z-index: 8; left: 0; right: 0; bottom: 0; padding: 12px 16px calc(12px + var(--ax-safe-bottom)); background: color-mix(in srgb, var(--axiom-surface-canvas) 92%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 -1px 0 var(--axiom-line-subtle); transform: translateY(calc(var(--kb, 0px) * -1 + var(--kb-safe, 0px))); transition: transform calc(280ms * var(--axiom-motion-scale)) var(--axiom-ease-drawer); }
+.ax-mkeyboard { position: absolute; z-index: 9; left: 0; right: 0; bottom: 0; height: 290px; padding: 8px 4px calc(var(--ax-safe-bottom) + 4px); background: color-mix(in srgb, var(--axiom-surface-sunken) 80%, #c8ccd3); display: grid; grid-template-rows: repeat(4, 1fr); gap: 10px; transform: translateY(100%); transition: transform calc(280ms * var(--axiom-motion-scale)) var(--axiom-ease-drawer); pointer-events: none; }
+.ax-mkeyboard.is-open { transform: none; }
+.ax-mkeyboard__row { display: flex; justify-content: center; gap: 6px; }
+.ax-mkeyboard__row i { flex: 0 1 32px; border-radius: 6px; background: var(--axiom-surface-raised); box-shadow: 0 1px 0 rgb(0 0 0 / 0.25); }
+.ax-mkeyboard__row i.w { flex-basis: 180px; }
+.ax-mkeyboard__row i.m { flex-basis: 44px; background: color-mix(in srgb, var(--axiom-surface-raised) 60%, #adb2bb); }
+.ax-mfield { display: flex; flex-direction: column; gap: 6px; }
+/* fields take --ax-h-field (44 on mobile) */
+
+/* ---------- Push navigation with an interactive edge swipe back ---------- */
+.ax-stack { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.ax-mpage { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--axiom-surface-canvas); transform: translateX(var(--px, 0%)); transition: transform var(--d-push) var(--axiom-ease-drawer); touch-action: pan-y; }
+.ax-mpage::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--dim, 0); pointer-events: none; transition: opacity var(--d-push) ease; }
+.ax-mpage[data-pos="under"] { --px: -30%; --dim: 0.08; }
+.ax-mpage[data-pos="out"] { --px: 100%; }
+.ax-mpage[data-pos="top"] { box-shadow: -8px 0 24px rgb(0 0 0 / 0.08); }
+.ax-stack.is-dragging .ax-mpage, .ax-stack.is-dragging .ax-mpage::after { transition: none; }
+html[data-motion="reduced"] .ax-mpage { transition: opacity var(--d-transition) ease; }
+html[data-motion="reduced"] .ax-mpage[data-pos="out"], html[data-motion="reduced"] .ax-mpage[data-pos="under"] { --px: 0%; opacity: 0; }
+
+/* ---------- Mobile buttons ---------- */
+/* Mobile CTA: 40 high (the mobile control step), full width */
+.ax-btn--m { --h: var(--ax-h); width: 100%; }
+
+/* ---------- Dense issue rows (status · id · title · priority · person) ---------- */
+.ax-issue { min-height: 52px; gap: 10px; }
+.ax-issue .ax-mrow__text { gap: 1px; }
+.ax-issue__status, .ax-issue__pri { display: grid; place-items: center; width: 18px; flex: none; }
+.ax-issue__meta { font: 400 12px/16px var(--ax-mono); color: var(--axiom-text-tertiary); letter-spacing: 0; }
+.ax-issue-group__head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px; background: var(--axiom-surface-sunken); font: var(--ax-w-medium) 14px/18px var(--ax-sans); box-shadow: 0 -1px 0 var(--axiom-line-subtle), 0 1px 0 var(--axiom-line-subtle); }
+.ax-prop { display: inline-flex; align-items: center; gap: 6px; font: 400 14px/20px var(--ax-sans); color: var(--axiom-text-primary); white-space: nowrap; }
+.ax-inbox-row { min-height: 64px; align-items: center; }
+.ax-swipe.is-flagged .ax-unread { background: var(--axiom-tone-yellow-solid); }
+.ax-project-card { padding: 16px; gap: 10px; box-shadow: var(--ax-card-ring, none); }
+.ax-mrow.is-pressing { background: var(--axiom-surface-hover); transition: background-color 400ms ease; }
+
+/* ==== Phone mode for .ax-m-scope: the < 768 / < 600 rules, applied inside a phone-scoped container ==== */
+.ax-m-scope { --ax-shell-page-x: 16px; --ax-shell-page-y: 8px; --ax-shell-block: 16px; --ax-shell-section: 32px; }
+.ax-m-scope .ax-appbar { height: 56px; padding: 0 16px; gap: 8px; }
+.ax-m-scope .ax-appbar__links, .ax-m-scope .ax-appbar .ax-search { display: none; }
+.ax-m-scope .ax-page-header__row { align-items: flex-start; flex-wrap: wrap; }
+.ax-m-scope .ax-action-bar { padding-left: 16px; gap: 4px; max-width: 100%; }
+.ax-m-scope .ax-action-bar .ax-btn:not(.ax-btn--icon) { font-size: 0; gap: 0; width: var(--h); padding: 0; }
+.ax-m-scope .ax-page { min-width: var(--ax-h); height: var(--ax-h); padding: 0 8px; }
+.ax-m-scope .ax-pagination { gap: 2px; flex-wrap: wrap; }
+.ax-m-scope .ax-window { padding: 24px; border-radius: var(--ax-radius-dialog-sm); }
+.ax-m-scope .ax-window__foot { flex-direction: column-reverse; }
+.ax-m-scope .ax-window__foot .ax-btn { width: 100%; }
+.ax-m-scope .ax-table [data-col="secondary"] { display: none; }
+.ax-m-scope .ax-table td, .ax-m-scope .ax-table th > .ax-th { padding-left: 8px; padding-right: 8px; }
+.ax-m-scope .ax-datepicker { padding: 12px; }
+.ax-m-scope .ax-tabs { gap: 20px; }
+.ax-m-scope .ax-shell { grid-template-columns: 1fr; }
+.ax-m-scope .ax-shell__sidebar { display: none; }
+.ax-m-scope .ax-shell__split { grid-template-columns: 1fr; }
+.ax-m-scope .ax-shell__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ax-m-scope .ax-toolbar { flex-wrap: wrap; max-width: 100%; }
+.ax-m-scope .ax-sidebar { width: 100%; }
+.ax-m-scope .ax-footer { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; padding: 24px; }
+.ax-m-scope .ax-footer > :first-child { grid-column: 1 / -1; }
+
+/* ==== Mobile adaptation: AtomGo app look, AXIOM components. Phones only; web is unchanged. ==== */
+html[data-brand] .ax-screen, html[data-brand] .ax-m-scope {
+  /* Mobile radius: bigger than web, still even. Web 4 / 6 / 8 → mobile CTA 16, field 12, card 16-20, sheet 28; chips and tags pill */
+  --ax-radius-control: 16px;     /* CTAs, segmented: 16 on a 40px button */
+  --ax-radius-icon: 50%;         /* icon buttons are circles */
+  --axiom-radius-tight: 4px; --axiom-radius-inner: 8px; --axiom-checkbox-radius: 6px;
+  --axiom-radius-field: 12px; --axiom-input-radius: 12px; --axiom-select-radius: 12px; --axiom-search-radius: 12px;
+  --axiom-radius-card: 16px; --axiom-dropdown-radius: 16px; --axiom-alert-radius: 16px;
+  --axiom-card-radius: 20px; --ax-radius-tile: 16px; --ax-radius-panel: 20px;
+  --ax-radius-dialog: 28px; --ax-radius-dialog-sm: 24px; --axiom-dialog-radius: 28px; --ax-radius-sheet: 28px;
+  --ax-radius-bar: 1000px; --ax-radius-group: 16px; --ax-radius-msheet: 28px; --ax-radius-fab: 20px;
+  /* Surfaces: white canvas, soft grey groups and fields */
+  --ax-m-canvas: var(--axiom-surface-raised);
+  --ax-m-fill: var(--axiom-surface-hover);
+  --ax-m-fill-pressed: color-mix(in srgb, var(--axiom-text-primary) 7%, var(--axiom-surface-hover));
+  --ax-tabbar-h: 64px;
+}
+
+html[data-brand] .ax-screen, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-screen__content, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mpage { background: var(--ax-m-canvas); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mtopbar { background: color-mix(in srgb, var(--ax-m-canvas) 86%, transparent); }
+/* Round icon buttons with a hairline, ink-coloured, like the app's back, bell and filter */
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mtopbar .ax-icon-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--axiom-surface-raised); color: var(--axiom-text-primary); box-shadow: inset 0 0 0 1px var(--axiom-line-subtle); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mtopbar .ax-icon-btn + .ax-icon-btn { margin-left: 4px; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mtopbar__title { font: var(--ax-w-strong) 18px/26px var(--ax-sans); letter-spacing: -0.01em; }
+/* Grouped lists: soft grey, no ring */
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mlist { background: var(--ax-m-fill); box-shadow: none; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mrow { background: var(--ax-m-fill); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mrow:active { background: var(--ax-m-fill-pressed); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mlist--flush, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mlist--flush .ax-mrow { background: var(--ax-m-canvas); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mlist--flush .ax-mrow:active { background: var(--ax-m-fill); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-mrow__icon { border-radius: 10px; background: var(--soft, var(--axiom-surface-raised)); }
+/* Fields: filled, no outline at rest; the focus line appears on focus */
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-control { background: var(--ax-m-fill); border-color: transparent; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-control:focus-within, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-control.is-active { background: var(--axiom-surface-raised); border-color: var(--axiom-line-focus); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-control.is-error { border-color: var(--axiom-line-negative); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-msearch__field { border-radius: 12px; box-shadow: none; background: var(--ax-m-fill); }
+/* Pills */
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tag, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-badge, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-chip { border-radius: 1000px; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-btn-group .ax-btn { border-radius: var(--axiom-radius-tight); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-btn-group .ax-btn:first-child { border-radius: var(--ax-radius-control) var(--axiom-radius-tight) var(--axiom-radius-tight) var(--ax-radius-control); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-btn-group .ax-btn:last-child { border-radius: var(--axiom-radius-tight) var(--ax-radius-control) var(--ax-radius-control) var(--axiom-radius-tight); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-progress, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-meter__track, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-range-meter { border-radius: 1000px; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-snackbar, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-msnack > * { border-radius: 16px; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-row__icon, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-node__icon, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-file__icon { border-radius: 10px; }
+/* Floating capsule tab bar; the selected tab sits on a soft pill */
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tabbar { height: var(--ax-tabbar-h); margin: 0 12px calc(var(--ax-safe-bottom) - 8px); padding: 4px; gap: 2px; border-radius: 1000px; background: color-mix(in srgb, var(--axiom-surface-raised) 92%, transparent); box-shadow: 0 0 0 1px var(--axiom-line-subtle), 0 6px 20px -6px rgb(10 10 10 / 0.18); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tabbar__item { border-radius: 1000px; gap: 2px; transition: background-color var(--d-feedback) ease, color var(--d-feedback) ease; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tabbar__icon { width: 28px; height: 26px; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tabbar__icon::before { display: none; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tabbar__item[aria-selected="true"] { background: var(--axiom-surface-selected); color: var(--axiom-text-link); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-tabbar__item .ax-badge { left: 18px; }
+/* Sheets: 28 corners, a soft lift, a round ringed closer */
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-msheet { box-shadow: 0 -6px 24px rgb(10 10 10 / 0.1); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-msheet__head .ax-btn--icon { border-radius: 50%; box-shadow: inset 0 0 0 1px var(--axiom-line-subtle); }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-asheet__group, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-malert, html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-ctx__menu { border-radius: 16px; }
+html[data-brand] :is(.ax-screen, .ax-m-scope) .ax-wheel::before { border-radius: 12px; }

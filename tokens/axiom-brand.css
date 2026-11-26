@@ -1,0 +1,301 @@
+/* ==========================================================================
+   AXIOM — brand layer
+   Load after tokens/tokens.css. On with <html data-brand="axiom">. Values credited to AtomGo v3.2.
+
+   What comes from AtomGo v3.2: colour values (neutral, indigo, the six chart
+   hues, status ramps), Geist / Geist Mono and their sizes, weights 400/500,
+   the 4px "CTA curve" on anything you click and 6px on anything that holds
+   content, hairline-defined surfaces, shadows and motion curves.
+
+   What stays AXIOM: every token role and pairing (surface/raised,
+   text/on-action…), one primary action per view, tones carry meaning (blue
+   info, green success, orange warning and field errors, red critical), focus
+   is a thicker line, the fixed six-series chart order, spacing roles, the
+   motion decision framework and reduced-motion behaviour.
+   ========================================================================== */
+
+html[data-brand="axiom"] {
+  /* ---- AtomGo primitives (reference only; components never use these) ---- */
+  --axp-n-50: #fafafa; --axp-n-100: #f5f5f5; --axp-n-200: #e5e5e5; --axp-n-300: #d4d4d4; --axp-n-400: #a3a3a3;
+  --axp-n-500: #737373; --axp-n-600: #525252; --axp-n-700: #404040; --axp-n-800: #262626; --axp-n-900: #171717; --axp-n-950: #0a0a0a;
+  /* Every hue is one ramp, 50-700: 50/100 soft fills, 200 lines, 300/400 dark-mode text and marks,
+     500 solids and charts, 600 hover, 700 pressed and on-soft text. Neutral alone adds 800-950 for dark surfaces. */
+  --axp-indigo-50: #eef2ff; --axp-indigo-100: #e0e7ff; --axp-indigo-200: #c7d2fe; --axp-indigo-300: #a5b4fc; --axp-indigo-400: #818cf8; --axp-indigo-500: #6366f1; --axp-indigo-600: #4f46e5; --axp-indigo-700: #4338ca;
+  --axp-blue-50: #eff8ff; --axp-blue-100: #d1e9ff; --axp-blue-200: #b2ddff; --axp-blue-300: #84caff; --axp-blue-400: #53b1fd; --axp-blue-500: #2e90fa; --axp-blue-600: #1570ef; --axp-blue-700: #175cd3;
+  --axp-sky-50: #f0f9ff; --axp-sky-100: #e0f2fe; --axp-sky-200: #bae6fd; --axp-sky-300: #7dd3fc; --axp-sky-400: #38bdf8; --axp-sky-500: #0ea5e9; --axp-sky-600: #0284c7; --axp-sky-700: #0369a1;
+  --axp-emerald-50: #ecfdf5; --axp-emerald-100: #d1fae5; --axp-emerald-200: #a7f3d0; --axp-emerald-300: #6ee7b7; --axp-emerald-400: #34d399; --axp-emerald-500: #10b981; --axp-emerald-600: #059669; --axp-emerald-700: #047857;
+  --axp-green-50: #edfcf2; --axp-green-100: #d3f8df; --axp-green-200: #aaf0c4; --axp-green-300: #73e2a3; --axp-green-400: #3ccb7f; --axp-green-500: #16b364; --axp-green-600: #099250; --axp-green-700: #087443;
+  --axp-amber-50: #fffbeb; --axp-amber-100: #fef3c7; --axp-amber-200: #fde68a; --axp-amber-300: #fcd34d; --axp-amber-400: #fbbf24; --axp-amber-500: #f59e0b; --axp-amber-600: #d97706; --axp-amber-700: #b45309;
+  --axp-orange-50: #fef6ee; --axp-orange-100: #fdead7; --axp-orange-200: #f9dbaf; --axp-orange-300: #f7b27a; --axp-orange-400: #f38744; --axp-orange-500: #ef6820; --axp-orange-600: #e04f16; --axp-orange-700: #b93815;
+  --axp-red-50: #fef2f2; --axp-red-100: #fee2e2; --axp-red-200: #fecaca; --axp-red-300: #fca5a5; --axp-red-400: #f87171; --axp-red-500: #ef4444; --axp-red-600: #dc2626; --axp-red-700: #b91c1c;
+  --axp-rose-50: #fff1f2; --axp-rose-100: #ffe4e6; --axp-rose-200: #fecdd3; --axp-rose-300: #fda4af; --axp-rose-400: #fb7185; --axp-rose-500: #f43f5e; --axp-rose-600: #e11d48; --axp-rose-700: #be123c;
+  --axp-violet-50: #f5f3ff; --axp-violet-100: #ede9fe; --axp-violet-200: #ddd6fe; --axp-violet-300: #c4b5fd; --axp-violet-400: #a78bfa; --axp-violet-500: #8b5cf6; --axp-violet-600: #7c3aed; --axp-violet-700: #6d28d9;
+
+  /* ---- AXIOM roles, AtomGo values · Light ---- */
+  --axiom-surface-canvas: var(--axp-n-50);
+  --axiom-surface-raised: #ffffff;
+  --axiom-surface-floating: #ffffff;
+  --axiom-surface-sunken: var(--axp-n-100);
+  --axiom-surface-disabled: var(--axp-n-100);
+  --axiom-surface-hover: var(--axp-n-100);
+  --axiom-surface-scrim: rgb(10 10 10 / 0.45);
+  --axiom-surface-inverse: var(--axp-n-900);
+  --axiom-surface-track: var(--axp-n-200);
+  --axiom-surface-selected: var(--axp-indigo-50);
+  --axiom-surface-shimmer: #ffffff;
+  --axiom-surface-code: var(--axp-n-900);
+
+  --axiom-text-primary: #000000;
+  --axiom-text-secondary: var(--axp-n-700);
+  --axiom-text-tertiary: var(--axp-n-500);
+  --axiom-text-on-action: #ffffff;
+  --axiom-text-on-inverse: #ffffff;
+  --axiom-text-negative: var(--axp-orange-700);   /* AXIOM rule: field errors are orange */
+  --axiom-text-link: var(--axp-indigo-600);
+  --axiom-text-disabled: var(--axp-n-400);
+  --axiom-text-positive: var(--axp-green-700);
+  --axiom-text-code: var(--axp-n-50);
+  --axiom-text-code-muted: var(--axp-n-400);
+
+  --axiom-line-subtle: var(--axp-n-200);
+  --axiom-line-field: var(--axp-n-300);
+  --axiom-line-strong: var(--axp-n-400);
+  --axiom-line-focus: var(--axp-indigo-600);       /* still a thicker line (1.5px), never colour alone */
+  --axiom-line-negative: var(--axp-orange-600);
+
+  /* Rests one step late, on 600: white on indigo-500 is 4.47:1, under the 4.5:1 rule.
+     600 gives 6.3:1, hover 700 gives 7.9:1. Pressed is capped at 700, like danger; the press itself is scale 0.97. */
+  --axiom-action-primary: var(--axp-indigo-600);
+  --axiom-action-primary-hover: var(--axp-indigo-700);
+  --axiom-action-primary-pressed: var(--axp-indigo-700);
+  --axiom-action-secondary: #ffffff;              /* AtomGo secondary: surface + hairline */
+  --axiom-action-secondary-hover: var(--axp-n-50);
+  --axiom-action-secondary-pressed: var(--axp-n-100);
+  --axiom-action-disabled: var(--axp-n-100);
+  --axiom-action-danger: var(--axp-red-600);
+  --axiom-action-danger-hover: var(--axp-red-700);
+  --axiom-action-danger-pressed: var(--axp-red-700);   /* capped at 700; the press itself is scale 0.97 */
+
+  --axiom-status-positive: var(--axp-green-600);
+  --axiom-status-negative: var(--axp-orange-600);
+  --axiom-status-warning: var(--axp-amber-500);
+  --axiom-status-info: var(--axp-blue-600);
+
+  /* Tones keep AXIOM's ten names and meanings; hues come from AtomGo's ramps */
+  --axiom-tone-blue-soft: var(--axp-blue-100);     --axiom-tone-blue-on-soft: var(--axp-blue-700);     --axiom-tone-blue-solid: var(--axp-blue-500);
+  --axiom-tone-green-soft: var(--axp-green-100);   --axiom-tone-green-on-soft: var(--axp-green-700);   --axiom-tone-green-solid: var(--axp-green-600);
+  --axiom-tone-orange-soft: var(--axp-orange-100); --axiom-tone-orange-on-soft: var(--axp-orange-700); --axiom-tone-orange-solid: var(--axp-orange-600);
+  --axiom-tone-pink-soft: var(--axp-rose-100);     --axiom-tone-pink-on-soft: var(--axp-rose-700);     --axiom-tone-pink-solid: var(--axp-rose-500);
+  --axiom-tone-yellow-soft: var(--axp-amber-100);  --axiom-tone-yellow-on-soft: var(--axp-amber-700);  --axiom-tone-yellow-solid: var(--axp-amber-500);
+  --axiom-tone-lime-soft: var(--axp-emerald-100);  --axiom-tone-lime-on-soft: var(--axp-emerald-700);  --axiom-tone-lime-solid: var(--axp-emerald-500);
+  --axiom-tone-teal-soft: var(--axp-sky-100);      --axiom-tone-teal-on-soft: var(--axp-sky-700);      --axiom-tone-teal-solid: var(--axp-sky-500);
+  --axiom-tone-violet-soft: var(--axp-indigo-100); --axiom-tone-violet-on-soft: var(--axp-indigo-700); --axiom-tone-violet-solid: var(--axp-indigo-500);
+  --axiom-tone-red-soft: var(--axp-red-100);       --axiom-tone-red-on-soft: var(--axp-red-700);       --axiom-tone-red-solid: var(--axp-red-600);
+  --axiom-tone-clay-soft: var(--axp-n-100);        --axiom-tone-clay-on-soft: var(--axp-n-700);        --axiom-tone-clay-solid: var(--axp-n-500);
+
+  /* Charts: AtomGo's six, in AtomGo's fixed order */
+  --ax-chart-1: var(--axp-indigo-500);
+  --ax-chart-2: var(--axp-emerald-500);
+  --ax-chart-3: var(--axp-violet-500);
+  --ax-chart-4: var(--axp-amber-500);
+  --ax-chart-5: var(--axp-sky-500);
+  --ax-chart-6: var(--axp-rose-500);
+  --ax-chart-soft: var(--axp-indigo-100);
+  --ax-chart-stroke: 1.5px;
+  --ax-meter: var(--axp-indigo-400);
+
+  /* ---- Typography: Geist, AtomGo sizes, weights 400 / 500 ---- */
+  --axiom-font-family-sans: "Geist";
+  --axiom-font-family-display: "Geist";
+  --axiom-font-family-mono: "Geist Mono";
+  --axiom-font-weight-semibold: 500;
+  --ax-w-strong: 500;
+  --axiom-typography-display-font-size: 28px;   --axiom-typography-display-line-height: 32px;   --axiom-typography-display-letter-spacing: -0.03em;
+  --axiom-typography-h1-font-size: 28px;        --axiom-typography-h1-line-height: 34px;        --axiom-typography-h1-letter-spacing: -0.025em;
+  --axiom-typography-h2-font-size: 22px;        --axiom-typography-h2-line-height: 28px;        --axiom-typography-h2-letter-spacing: -0.02em;
+  --axiom-typography-h3-font-size: 18px;        --axiom-typography-h3-line-height: 24px;        --axiom-typography-h3-letter-spacing: -0.015em;
+  --axiom-typography-h1-mobile-font-size: 24px; --axiom-typography-h1-mobile-line-height: 30px; --axiom-typography-h1-mobile-letter-spacing: -0.025em;
+  --axiom-typography-h2-mobile-font-size: 18px; --axiom-typography-h2-mobile-line-height: 24px; --axiom-typography-h2-mobile-letter-spacing: -0.015em;
+  --axiom-typography-h3-mobile-font-size: 16px; --axiom-typography-h3-mobile-line-height: 22px; --axiom-typography-h3-mobile-letter-spacing: 0;
+  --axiom-typography-body-lg-font-size: 16px;   --axiom-typography-body-lg-line-height: 22px;   --axiom-typography-body-lg-letter-spacing: 0;
+  --axiom-typography-body-lg-strong-font-size: 16px; --axiom-typography-body-lg-strong-line-height: 22px; --axiom-typography-body-lg-strong-letter-spacing: 0;
+  --axiom-typography-body-font-size: 14px;      --axiom-typography-body-line-height: 20px;      --axiom-typography-body-letter-spacing: 0;
+  --axiom-typography-label-font-size: 14px;     --axiom-typography-label-line-height: 18px;     --axiom-typography-label-letter-spacing: 0;
+  --axiom-typography-caption-font-size: 12px;   --axiom-typography-caption-line-height: 16px;   --axiom-typography-caption-letter-spacing: 0;
+  --axiom-typography-caption-strong-font-size: 12px; --axiom-typography-caption-strong-line-height: 16px; --axiom-typography-caption-strong-letter-spacing: 0;
+  --axiom-typography-code-font-size: 12px;      --axiom-typography-code-line-height: 16px;      --axiom-typography-code-letter-spacing: 0;
+
+  /* ---- Shape: 4px on anything you click, 6px on anything that holds content ---- */
+  --axiom-radius-tight: 2px;
+  --axiom-radius-inner: 4px;
+  --axiom-radius-field: 4px;
+  --axiom-radius-card: 6px;
+  --axiom-input-radius: 4px;
+  --axiom-select-radius: 4px;
+  --axiom-search-radius: 4px;
+  --axiom-dropdown-radius: 6px;
+  --axiom-card-radius: 6px;
+  --axiom-alert-radius: 6px;
+  --axiom-dialog-radius: 8px;
+  --axiom-checkbox-radius: 4px;
+  --ax-radius-control: 4px;
+  --ax-radius-icon: 4px;
+  --ax-radius-dialog: 8px;
+  --ax-radius-dialog-sm: 8px;
+  --ax-radius-sheet: 8px;
+  --ax-radius-panel: 8px;
+  --ax-radius-tile: 6px;
+  --ax-radius-bar: 2px;
+  --ax-btn-ring: inset 0 0 0 1px var(--axiom-line-subtle), 0 1px 2px rgb(10 10 10 / 0.06);
+  --ax-card-ring: inset 0 0 0 1px var(--axiom-line-subtle);
+
+  /* ---- Elevation ---- */
+  --axiom-elevation-lifted: 0 1px 2px rgb(10 10 10 / 0.06), 0 0 0 1px rgb(10 10 10 / 0.04);
+  --axiom-elevation-floating: 0 0 0 1px rgb(10 10 10 / 0.08), 0 6px 20px -6px rgb(10 10 10 / 0.18);
+  --axiom-elevation-modal: 0 0 0 1px rgb(10 10 10 / 0.08), 0 16px 40px -8px rgb(10 10 10 / 0.24);
+
+  /* ---- Motion values (AXIOM's rules and framework still decide when) ---- */
+  --axiom-motion-easing-standard: cubic-bezier(0.25, 1, 0.5, 1);   /* ease-out-quart: state */
+  --axiom-motion-easing-enter: cubic-bezier(0.16, 1, 0.3, 1);      /* ease-out-expo: travel */
+  --axiom-motion-easing-exit: cubic-bezier(0.5, 0, 0.75, 0);       /* ease-in: exits only */
+  --axiom-ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --axiom-ease-drawer: cubic-bezier(0.16, 1, 0.3, 1);
+  --axiom-motion-duration-transition: 200ms;
+  --axiom-motion-duration-overlay: 260ms;
+  --d-press: calc(90ms * var(--axiom-motion-scale));
+  --d-exit: calc(150ms * var(--axiom-motion-scale));
+  --d-drawer: calc(260ms * var(--axiom-motion-scale));
+
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Dark: AtomGo's dark values on the same roles ---- */
+html[data-brand="axiom"][data-theme="dark"] {
+  --axiom-surface-canvas: var(--axp-n-950);
+  --axiom-surface-raised: var(--axp-n-900);
+  --axiom-surface-floating: var(--axp-n-900);
+  --axiom-surface-sunken: #121212;
+  --axiom-surface-disabled: var(--axp-n-800);
+  --axiom-surface-hover: var(--axp-n-800);
+  --axiom-surface-scrim: rgb(0 0 0 / 0.7);
+  --axiom-surface-inverse: var(--axp-n-50);
+  --axiom-surface-track: var(--axp-n-800);
+  --axiom-surface-selected: color-mix(in srgb, var(--axp-indigo-400) 16%, var(--axp-n-900));
+  --axiom-surface-shimmer: var(--axp-n-800);
+  --axiom-surface-code: #121212;
+  --axiom-text-primary: var(--axp-n-50);
+  --axiom-text-secondary: var(--axp-n-300);
+  --axiom-text-tertiary: var(--axp-n-400);
+  --axiom-text-on-inverse: var(--axp-n-950);
+  --axiom-text-negative: var(--axp-orange-400);
+  --axiom-text-link: var(--axp-indigo-300);
+  --axiom-text-disabled: var(--axp-n-600);
+  --axiom-text-positive: var(--axp-green-400);
+  --axiom-line-subtle: var(--axp-n-800);
+  --axiom-line-field: var(--axp-n-700);
+  --axiom-line-strong: var(--axp-n-600);
+  --axiom-line-focus: var(--axp-indigo-300);
+  --axiom-line-negative: var(--axp-orange-400);
+  /* Same steps as Light: a lighter hover (400) would drop white text to 2.9:1 */
+  --axiom-action-primary-hover: var(--axp-indigo-700);
+  --axiom-action-primary-pressed: var(--axp-indigo-700);
+  --axiom-action-secondary: var(--axp-n-900);
+  --axiom-action-secondary-hover: var(--axp-n-800);
+  --axiom-action-secondary-pressed: var(--axp-n-700);
+  --axiom-action-disabled: var(--axp-n-800);
+  --axiom-action-danger: var(--axp-red-600);
+  --axiom-action-danger-hover: #ef4444;
+  --axiom-status-positive: var(--axp-green-400);
+  --axiom-status-negative: var(--axp-orange-400);
+  --axiom-status-warning: var(--axp-amber-400);
+  --axiom-status-info: var(--axp-blue-400);
+  --axiom-tone-blue-soft: color-mix(in srgb, var(--axp-blue-400) 24%, var(--axp-n-900)); --axiom-tone-blue-solid: var(--axp-blue-400);     --axiom-tone-blue-on-soft: var(--axp-blue-300);
+  --axiom-tone-green-soft: color-mix(in srgb, var(--axp-green-400) 24%, var(--axp-n-900)); --axiom-tone-green-solid: var(--axp-green-400);   --axiom-tone-green-on-soft: var(--axp-green-300);
+  --axiom-tone-orange-soft: color-mix(in srgb, var(--axp-orange-400) 24%, var(--axp-n-900)); --axiom-tone-orange-solid: var(--axp-orange-400); --axiom-tone-orange-on-soft: var(--axp-orange-300);
+  --axiom-tone-pink-soft: color-mix(in srgb, var(--axp-rose-400) 24%, var(--axp-n-900)); --axiom-tone-pink-solid: var(--axp-rose-400);     --axiom-tone-pink-on-soft: var(--axp-rose-300);
+  --axiom-tone-yellow-soft: color-mix(in srgb, var(--axp-amber-400) 24%, var(--axp-n-900)); --axiom-tone-yellow-solid: var(--axp-amber-400);  --axiom-tone-yellow-on-soft: var(--axp-amber-300);
+  --axiom-tone-lime-soft: color-mix(in srgb, var(--axp-emerald-400) 24%, var(--axp-n-900)); --axiom-tone-lime-solid: var(--axp-emerald-400);  --axiom-tone-lime-on-soft: var(--axp-emerald-300);
+  --axiom-tone-teal-soft: color-mix(in srgb, var(--axp-sky-400) 24%, var(--axp-n-900)); --axiom-tone-teal-solid: var(--axp-sky-400);      --axiom-tone-teal-on-soft: var(--axp-sky-300);
+  --axiom-tone-violet-soft: color-mix(in srgb, var(--axp-indigo-400) 24%, var(--axp-n-900)); --axiom-tone-violet-solid: var(--axp-indigo-400); --axiom-tone-violet-on-soft: var(--axp-indigo-300);
+  --axiom-tone-red-soft: color-mix(in srgb, var(--axp-red-400) 24%, var(--axp-n-900)); --axiom-tone-red-solid: var(--axp-red-400);       --axiom-tone-red-on-soft: var(--axp-red-300);
+  --axiom-tone-clay-soft: var(--axp-n-800);        --axiom-tone-clay-on-soft: var(--axp-n-300);
+  /* Dark: the bright 400 shades, so series and tone marks stand out on near-black */
+  --ax-chart-1: var(--axp-indigo-400); --ax-chart-2: var(--axp-emerald-400); --ax-chart-3: var(--axp-violet-400);
+  --ax-chart-4: var(--axp-amber-400);
+  --ax-chart-5: var(--axp-sky-400); --ax-chart-6: var(--axp-rose-400);
+  --ax-chart-soft: color-mix(in srgb, var(--axp-indigo-400) 34%, var(--axp-n-900));
+  --ax-btn-ring: inset 0 0 0 1px var(--axiom-line-subtle), 0 1px 2px rgb(0 0 0 / 0.5);
+  --axiom-elevation-lifted: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --axiom-elevation-floating: 0 0 0 1px rgb(255 255 255 / 0.09), 0 6px 20px -6px rgb(0 0 0 / 0.7);
+  --axiom-elevation-modal: 0 0 0 1px rgb(255 255 255 / 0.09), 0 16px 40px -8px rgb(0 0 0 / 0.8);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-brand="axiom"]:not([data-theme="light"]) {
+    --axiom-surface-canvas: var(--axp-n-950); --axiom-surface-raised: var(--axp-n-900); --axiom-surface-floating: var(--axp-n-900);
+    --axiom-surface-sunken: #121212; --axiom-surface-disabled: var(--axp-n-800); --axiom-surface-hover: var(--axp-n-800);
+    --axiom-surface-scrim: rgb(0 0 0 / 0.7); --axiom-surface-inverse: var(--axp-n-50); --axiom-surface-track: var(--axp-n-800);
+    --axiom-surface-selected: color-mix(in srgb, var(--axp-indigo-400) 16%, var(--axp-n-900)); --axiom-surface-shimmer: var(--axp-n-800); --axiom-surface-code: #121212;
+    --axiom-text-primary: var(--axp-n-50); --axiom-text-secondary: var(--axp-n-300); --axiom-text-tertiary: var(--axp-n-400);
+    --axiom-text-on-inverse: var(--axp-n-950); --axiom-text-negative: var(--axp-orange-400); --axiom-text-link: var(--axp-indigo-300);
+    --axiom-text-disabled: var(--axp-n-600); --axiom-text-positive: var(--axp-green-400);
+    --axiom-line-subtle: var(--axp-n-800); --axiom-line-field: var(--axp-n-700); --axiom-line-strong: var(--axp-n-600);
+    --axiom-line-focus: var(--axp-indigo-300); --axiom-line-negative: var(--axp-orange-400);
+    --axiom-action-primary-hover: var(--axp-indigo-700); --axiom-action-primary-pressed: var(--axp-indigo-700);
+    --axiom-action-secondary: var(--axp-n-900); --axiom-action-secondary-hover: var(--axp-n-800); --axiom-action-secondary-pressed: var(--axp-n-700);
+    --axiom-action-disabled: var(--axp-n-800); --axiom-action-danger-hover: #ef4444;
+    --axiom-status-positive: var(--axp-green-400); --axiom-status-negative: var(--axp-orange-400); --axiom-status-warning: var(--axp-amber-400); --axiom-status-info: var(--axp-blue-400);
+    --axiom-tone-blue-soft: color-mix(in srgb, var(--axp-blue-400) 24%, var(--axp-n-900)); --axiom-tone-blue-solid: var(--axp-blue-400); --axiom-tone-blue-on-soft: var(--axp-blue-300);
+    --axiom-tone-green-soft: color-mix(in srgb, var(--axp-green-400) 24%, var(--axp-n-900)); --axiom-tone-green-solid: var(--axp-green-400); --axiom-tone-green-on-soft: var(--axp-green-300);
+    --axiom-tone-orange-soft: color-mix(in srgb, var(--axp-orange-400) 24%, var(--axp-n-900)); --axiom-tone-orange-solid: var(--axp-orange-400); --axiom-tone-orange-on-soft: var(--axp-orange-300);
+    --axiom-tone-pink-soft: color-mix(in srgb, var(--axp-rose-400) 24%, var(--axp-n-900)); --axiom-tone-pink-solid: var(--axp-rose-400); --axiom-tone-pink-on-soft: var(--axp-rose-300);
+    --axiom-tone-yellow-soft: color-mix(in srgb, var(--axp-amber-400) 24%, var(--axp-n-900)); --axiom-tone-yellow-solid: var(--axp-amber-400); --axiom-tone-yellow-on-soft: var(--axp-amber-300);
+    --axiom-tone-lime-soft: color-mix(in srgb, var(--axp-emerald-400) 24%, var(--axp-n-900)); --axiom-tone-lime-solid: var(--axp-emerald-400); --axiom-tone-lime-on-soft: var(--axp-emerald-300);
+    --axiom-tone-teal-soft: color-mix(in srgb, var(--axp-sky-400) 24%, var(--axp-n-900)); --axiom-tone-teal-solid: var(--axp-sky-400); --axiom-tone-teal-on-soft: var(--axp-sky-300);
+    --axiom-tone-violet-soft: color-mix(in srgb, var(--axp-indigo-400) 24%, var(--axp-n-900)); --axiom-tone-violet-solid: var(--axp-indigo-400); --axiom-tone-violet-on-soft: var(--axp-indigo-300);
+    --axiom-tone-red-soft: color-mix(in srgb, var(--axp-red-400) 24%, var(--axp-n-900)); --axiom-tone-red-solid: var(--axp-red-400); --axiom-tone-red-on-soft: var(--axp-red-300);
+    --axiom-tone-clay-soft: var(--axp-n-800); --axiom-tone-clay-on-soft: var(--axp-n-300);
+    --ax-chart-1: var(--axp-indigo-400); --ax-chart-2: var(--axp-emerald-400); --ax-chart-3: var(--axp-violet-400); --ax-chart-4: var(--axp-amber-400); --ax-chart-5: var(--axp-sky-400); --ax-chart-6: var(--axp-rose-400); --ax-chart-soft: color-mix(in srgb, var(--axp-indigo-400) 34%, var(--axp-n-900));
+    --ax-btn-ring: inset 0 0 0 1px var(--axiom-line-subtle), 0 1px 2px rgb(0 0 0 / 0.5);
+    --axiom-elevation-lifted: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
+    --axiom-elevation-floating: 0 0 0 1px rgb(255 255 255 / 0.09), 0 6px 20px -6px rgb(0 0 0 / 0.7);
+    --axiom-elevation-modal: 0 0 0 1px rgb(255 255 255 / 0.09), 0 16px 40px -8px rgb(0 0 0 / 0.8);
+    color-scheme: dark;
+  }
+}
+
+/* ---- Component touches the brand needs (values only, same structure) ---- */
+html[data-brand="axiom"] .ax-tag { border-radius: var(--axiom-radius-inner); }
+html[data-brand="axiom"] .ax-badge { border-radius: 4px; }
+html[data-brand="axiom"] .ax-tooltip { border-radius: 4px; }
+html[data-brand="axiom"] .ax-snackbar { border-radius: 6px; }
+html[data-brand="axiom"] .ax-action-bar { border-radius: 6px; }
+html[data-brand="axiom"] .ax-segmented { background: var(--axiom-surface-sunken); }
+html[data-brand="axiom"] .ax-segmented__thumb { box-shadow: inset 0 0 0 1px var(--axiom-line-subtle), 0 1px 2px rgb(10 10 10 / 0.06); }
+html[data-brand="axiom"] .ax-chip { box-shadow: inset 0 0 0 1px var(--axiom-line-subtle); background: var(--axiom-surface-raised); }
+html[data-brand="axiom"] .ax-chip[aria-pressed="true"] { box-shadow: inset 0 0 0 1px var(--axiom-tone-violet-soft); background: var(--axiom-surface-selected); color: var(--axiom-text-link); }
+html[data-brand="axiom"] .ax-page { box-shadow: inset 0 0 0 1px var(--axiom-line-subtle); background: var(--axiom-surface-raised); }
+html[data-brand="axiom"] .ax-page[aria-current="page"] { box-shadow: none; background: var(--axiom-action-primary); }
+html[data-brand="axiom"] .ax-pagination { gap: 4px; }
+html[data-brand="axiom"] .ax-page:first-child, html[data-brand="axiom"] .ax-page:last-child, html[data-brand="axiom"] .ax-btn-group .ax-btn { border-radius: 4px; }
+html[data-brand="axiom"] .ax-btn-group { gap: 4px; }
+html[data-brand="axiom"] .ax-kanban__col { background: var(--axiom-surface-sunken); box-shadow: inset 0 0 0 1px var(--axiom-line-subtle); }
+html[data-brand="axiom"] .ax-bubble { border-radius: 8px; }
+html[data-brand="axiom"] .ax-msg--in .ax-bubble:last-child { border-bottom-left-radius: 2px; }
+html[data-brand="axiom"] .ax-msg--out .ax-bubble:last-child { border-bottom-right-radius: 2px; }
+html[data-brand="axiom"] .ax-msg--out .ax-bubble { background: var(--axiom-surface-selected); }
+html[data-brand="axiom"] .ax-typing { border-radius: 8px 8px 8px 2px; }
+html[data-brand="axiom"] .ax-paycard { border-radius: 8px; }
+html[data-brand="axiom"] .ax-paycard::before { background: var(--ax-chart-1); }
+html[data-brand="axiom"] .ax-paycard::after { background: var(--ax-chart-3); }
+html[data-brand="axiom"] .ax-progress, html[data-brand="axiom"] .ax-meter__track, html[data-brand="axiom"] .ax-range-meter { border-radius: 2px; height: 6px; }
+html[data-brand="axiom"] .ax-step__dot { width: 28px; height: 28px; }
+html[data-brand="axiom"] .ax-step::before, html[data-brand="axiom"] .ax-step::after { top: 14px; }
+html[data-brand="axiom"] .ax-mega__feature { background: var(--axiom-surface-selected); color: var(--axiom-text-link); }
+html[data-brand="axiom"] .ax-pricing__price, html[data-brand="axiom"] .ax-stat__value { letter-spacing: -0.03em; }
+html[data-brand="axiom"] .ax-kbd { border-bottom-width: 1px; border-radius: 4px; font-family: var(--ax-mono); }
+html[data-brand="axiom"] .ax-tl__dot { box-shadow: 0 0 0 3px var(--axiom-surface-selected); }
+html[data-brand="axiom"] .ax-node { border-radius: 6px; }
+html[data-brand="axiom"] .ax-node__icon, html[data-brand="axiom"] .ax-row__icon, html[data-brand="axiom"] .ax-mega__icon, html[data-brand="axiom"] .ax-file__icon { border-radius: 4px; }
+html[data-brand="axiom"] .ax-logo-tile { border-radius: 6px; }
+html[data-brand="axiom"] .ax-switch__knob { box-shadow: 0 1px 2px rgb(10 10 10 / 0.2); }
